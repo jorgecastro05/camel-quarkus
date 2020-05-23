@@ -110,7 +110,8 @@
                 <artifactId>kubernetes-maven-plugin</artifactId>
                 <version>1.0.0-alpha-3</version>
                 <configuration>
-                    <!--<dockerHost>tcp://microk8s:32000</dockerHost> -->
+                    <!-- <dockerHost>tcp://microk8s:32000</dockerHost> -->
+                    <!-- <dockerHost>tcp://192.168.122.122:2375</dockerHost> -->
                 </configuration>
             </plugin>
             <plugin>
