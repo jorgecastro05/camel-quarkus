@@ -83,7 +83,7 @@
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
-            <artifactId>quarkus-jdbc-mariadb</artifactId>
+            <artifactId>quarkus-jdbc-mysql</artifactId>
         </dependency>
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -109,61 +109,23 @@
                 <groupId>org.eclipse.jkube</groupId>
                 <artifactId>kubernetes-maven-plugin</artifactId>
                 <version>1.0.0-alpha-3</version>
-                <configuration>
-                    <!-- <dockerHost>tcp://microk8s:32000</dockerHost> -->
-                    <!-- <dockerHost>tcp://192.168.122.122:2375</dockerHost> -->
-                </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.eclipse.jkube</groupId>
                 <artifactId>openshift-maven-plugin</artifactId>
                 <version>1.0.0-alpha-3</version>
                 <configuration>
-                    <images>
-                        <image>
-                            <name>${project.groupId}/${project.artifactId}</name>
-                            <build>
-                                <from>openjdk:11</from>
-                                <tags>
-                                    <tag>latest</tag>
-                                    <tag>${project.version}</tag>
-                                </tags>
-                                <env>
-                                    <JAVA_APP_JAR>${project.artifactId}-${project.version}-runner.jar</JAVA_APP_JAR>
-                                    <JAVA_OPTIONS>-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager</JAVA_OPTIONS>
-                                </env>
-                                <assembly>
-                                    <mode>dir</mode>
-                                    <targetDir>/</targetDir>
-                                    <inline>
-                                        <id>customized-quarkus</id>
-                                        <files>
-                                            <file>
-                                                <source>target/${project.artifactId}-${project.version}-runner.jar</source>
-                                                <outputDirectory>.</outputDirectory>
-                                            </file>
-                                        </files>
-                                        <fileSets>
-                                            <fileSet>
-                                                <directory>${project.basedir}/target/lib</directory>
-                                                <outputDirectory>.</outputDirectory>
-                                                <fileMode>755</fileMode>
-                                            </fileSet>
-                                        </fileSets>
-                                    </inline>
-                                </assembly>
-                                <ports>8080</ports>
-                                <user>185</user>
-                            </build>
-                        </image>
-                    </images>
-                    <enricher>
+                    <generator>
+                        <includes>
+                            <include>quarkus</include>
+                        </includes>
                         <config>
-                            <jkube-service>
-                                <type>NodePort</type>
-                            </jkube-service>
+                            <quarkus>
+                                <from>registry.access.redhat.com/openjdk/openjdk-11-rhel7</from>
+                            </quarkus>
                         </config>
-                    </enricher>
+                    </generator>
                 </configuration>
             </plugin>
             <plugin>

@@ -17,16 +17,13 @@ public class CamelRoutes extends RouteBuilder {
         getContext().setStreamCaching(true);
         getContext().setUseMDCLogging(true);
 
-        /*from("timer:helloDb?period=10000").routeId("routeHelloWorldDb").noAutoStartup()
-                .to("sql:{{example.sql.query}}?datasource=#db")
-                .split(body()).parallelProcessing()
+        from("timer:helloDb?repeatCount=1").routeId("routeHelloWorldDb")
+                .to("sql:{{example.sql.query}}?datasource=#db&outputType=StreamList")
+                .split(body()).streaming().parallelProcessing()
                 .bean(transformationComponent, "removeIdKey")
                 .marshal().json(JsonLibrary.Jackson)
                 .log("${body}")
-                .end();*/
-
-        from("timer:hello?period=10000").routeId("routeHelloWorld")
-                .log("Hello world from Camel Quarkus")
                 .end();
+
     }
 }

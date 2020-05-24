@@ -33,6 +33,8 @@ You can then execute your native executable with: `./target/camel-quarkus-1.0.0-
 If you want to learn more about building native executables, please consult https://quarkus.io/guides/building-native-image.
 
 
-## Deploy directly into Kubernetes or Openshift
+## Deploy directly into Openshift
 
- 
+Use this command to deploy on Openshift (must be logged first)
+
+ mvn clean package oc:build oc:resource oc:apply
