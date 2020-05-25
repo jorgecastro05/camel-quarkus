@@ -10,7 +10,7 @@ import javax.inject.Inject;
 public class CamelRoutes extends RouteBuilder {
 
     @Inject
-    private TransformationComponent transformationComponent;
+    protected TransformationComponent transformationComponent;
 
     @Override
     public void configure() throws Exception {
@@ -23,6 +23,14 @@ public class CamelRoutes extends RouteBuilder {
                 .bean(transformationComponent, "removeIdKey")
                 .marshal().json(JsonLibrary.Jackson)
                 .log("${body}")
+                .end();
+
+        from("kafka:my-topic?brokers=my-cluster-kafka-bootstrap:9092")
+                .log("Message received from Kafka : ${body}")
+                .log("    on the topic ${headers[kafka.TOPIC]}")
+                .log("    on the partition ${headers[kafka.PARTITION]}")
+                .log("    with the offset ${headers[kafka.OFFSET]}")
+                .log("    with the key ${headers[kafka.KEY]}")
                 .end();
 
     }
