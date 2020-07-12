@@ -1,0 +1,20 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: camel-quarkus-jenkins
+spec:
+  source:
+    git:
+      uri: https://github.com/jorgecastro05/camel-quarkus.git
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfilePath: src/main/CI-CD/Jenkinsfile
+      env:
+        - name: APP_GIT_URL
+          value: https://github.com/jorgecastro05/camel-quarkus
+        - name: APP_NAME
+          value: camel-quarkus
+        - name: DEV_PROJECT
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace

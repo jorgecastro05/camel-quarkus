@@ -9,12 +9,6 @@ pipeline {
       }
     }
 
-    environment {
-        DEV_PROJECT = "chetest-f47k"
-        APP_GIT_URL = "https://github.com/jorgecastro05/camel-quarkus"
-        APP_NAME = "camel-quarkus"
-    }
-
     stages {
 
         stage('Clone repository from github') {
@@ -31,7 +25,7 @@ pipeline {
         }
 
 
-        stage('Launch new app in DEV env') {
+        stage('Launch new app in DEV') {
             steps {
                 echo '### Running Jkube Plugin ###'
                 sh '''
@@ -40,7 +34,7 @@ pipeline {
             }
         }
 
-        stage('Wait for deployment in DEV env') {
+        stage('Wait for deployment in DEV') {
             steps {
                 script {
                     openshift.withCluster() {
