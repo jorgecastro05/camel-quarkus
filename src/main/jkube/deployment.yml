@@ -1,3 +1,6 @@
+metadata:
+  annotations:
+    reloader.stakater.com/auto: "true"
 spec:
   replicas: 1
   template:
@@ -17,3 +20,6 @@ spec:
             limits:
               memory: 256Mi
               cpu: 500m
+          envFrom:
+            - secretRef:
+                name: ${project.artifactId}-secret
