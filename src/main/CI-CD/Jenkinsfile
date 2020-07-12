@@ -26,9 +26,7 @@ pipeline {
 
         stage('Set enviroment variables') {
             steps {
-                variableReplace(
-                	configs: [
-                		variablesReplaceConfig(
+                  variablesReplaceConfig(
                 			configs: [
                 				variablesReplaceItemConfig(
                 					name: 'DB_USER',
@@ -43,8 +41,7 @@ pipeline {
                 			filePath: 'src/main/jkube/secret.yml',
                 			variablesPrefix: '#{',
                 			variablesSuffix: '}#'
-                            )]
-                )
+                            )
             }
         }
 
