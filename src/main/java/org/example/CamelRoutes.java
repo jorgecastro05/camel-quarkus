@@ -25,13 +25,5 @@ public class CamelRoutes extends RouteBuilder {
                 .log("${body}")
                 .end();
 
-        from("kafka:my-topic?brokers=my-cluster-kafka-bootstrap:9092")
-                .log("Message received from Kafka : ${body}")
-                .log("    on the topic ${headers[kafka.TOPIC]}")
-                .log("    on the partition ${headers[kafka.PARTITION]}")
-                .log("    with the offset ${headers[kafka.OFFSET]}")
-                .log("    with the key ${headers[kafka.KEY]}")
-                .end();
-
     }
 }
