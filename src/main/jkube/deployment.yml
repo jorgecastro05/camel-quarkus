@@ -1,8 +1,19 @@
 spec:
+  replicas: 1
   template:
     spec:
+      volumes:
+        - name: config
+          configMap:
+            name: ${project.artifactId}-config
+            items:
+              - key: application.properties
+                path: application.properties
       containers:
-        - resources:
+        - volumeMounts:
+            - name: config
+              mountPath: /opt/config
+          resources:
             limits:
               memory: 256Mi
               cpu: 500m

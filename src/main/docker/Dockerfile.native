@@ -7,7 +7,7 @@
 #
 # Then, build the image with:
 #
-# docker build -f src/main/docker/Dockerfile.native -t quarkus/camel-quarkus .
+# podman build -f src/main/docker/Dockerfile.native -t quarkus/camel-quarkus .
 #
 # Then run the container using:
 #

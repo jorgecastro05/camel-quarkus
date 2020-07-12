@@ -63,7 +63,7 @@ See the next example if you want to change the base image
  
  
  
-## Running Kafka with OKD
+#### Running Kafka with OKD
 
 https://strimzi.io/quickstarts/
 
@@ -71,4 +71,12 @@ Start Test producer
 
     oc -n myproject run kafka-producer -ti --image=strimzi/kafka:0.18.0-kafka-2.5.0 --rm=true --restart=Never -- bin/kafka-console-producer.sh --broker-list my-cluster-kafka-bootstrap:9092 --topic my-topic
 
-
+##### Create image native and push into quay.io
+    
+    podman build -f src/main/docker/Dockerfile.native -t camel-quarkus .
+    podman login quay.io
+    podman push camel-quarkus docker://quay.io/jorgecastro05/camel-quarkus
+    
+##### Run native image on openshift
+    
+    oc new-app --name quarkus-native --docker-image quay.io/jorgecastro05/camel-quarkus

@@ -112,15 +112,36 @@
             <plugin>
                 <groupId>org.eclipse.jkube</groupId>
                 <artifactId>kubernetes-maven-plugin</artifactId>
-                <version>1.0.0-alpha-3</version>
+                <version>1.0.0-alpha-4</version>
             </plugin>
 
             <plugin>
                 <groupId>org.eclipse.jkube</groupId>
                 <artifactId>openshift-maven-plugin</artifactId>
-                <version>1.0.0-alpha-3</version>
+                <version>1.0.0-alpha-4</version>
                 <configuration>
                     <buildStrategy>docker</buildStrategy>
+                    <resources>
+                        <configMap>
+                            <name>${project.artifactId}-config</name>
+                            <entries>
+                                <entry>
+                                    <file>src/main/resources/application.properties</file>
+                                </entry>
+                            </entries>
+                        </configMap>
+                    </resources>
+                    <enricher>
+                        <config>
+                            <jkube-openshift-imageChangeTrigger>
+                                <containers>quarkus</containers>
+                            </jkube-openshift-imageChangeTrigger>
+                            <jkube-healthcheck-quarkus>
+                                <livenessInitialDelay>10</livenessInitialDelay>
+                                <readinessIntialDelay>10</readinessIntialDelay>
+                            </jkube-healthcheck-quarkus>
+                        </config>
+                    </enricher>
                 </configuration>
             </plugin>
             <plugin>
