@@ -24,7 +24,7 @@ pipeline {
             }
         }
 
-        stage('Set enviroment variables') {
+
                 variableReplace(
                 	configs: [
                 		variablesReplaceConfig(
@@ -44,7 +44,7 @@ pipeline {
                 			variablesSuffix: '}#'
                             )]
                 )
-        }
+
 
 
         stage('Launch new app in DEV') {
