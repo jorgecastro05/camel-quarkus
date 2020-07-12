@@ -26,7 +26,11 @@ pipeline {
 
         stage('Set enviroment variables') {
                 steps {
-                contentReplace(configs: [variablesReplaceConfig(configs: [variablesReplaceItemConfig(name: 'DB_USER', value: '${DB_USER}'), variablesReplaceItemConfig(name: 'DB_PASSWORD', value: '${DB_PASSWORD}')], emptyValue: '', fileEncoding: 'UTF-8', filePath: 'src/main/jkube/secret.yml', variablesPrefix: '#{', variablesSuffix: '}#')])
+                contentReplace(configs: [variablesReplaceConfig(configs: [
+                variablesReplaceItemConfig(name: 'DB_USER', value: '${DB_USER}'),
+                variablesReplaceItemConfig(name: 'DB_PASSWORD', value: '${DB_PASSWORD}')],
+                emptyValue: '', fileEncoding: 'UTF-8', filePath: 'src/main/jkube/secret.yml',
+                variablesPrefix: '#{', variablesSuffix: '}#')])
                 }
         }
 
