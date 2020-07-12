@@ -1,0 +1,58 @@
+pipeline {
+    options {
+        // set a timeout of 60 minutes for this pipeline
+        timeout(time: 60, unit: 'MINUTES')
+    }
+    agent {
+      node {
+        label 'maven'
+      }
+    }
+
+    environment {
+        DEV_PROJECT = "chetest-f47k"
+        APP_GIT_URL = "https://github.com/jorgecastro05/camel-quarkus"
+        APP_NAME = "camel-quarkus"
+    }
+
+    stages {
+
+        stage('Clone repository from github') {
+            steps {
+                echo '### Cloning ${APP_GIT_URL} repository ###'
+                script {
+                // The below will clone your repo and will be checked out to master branch by default.
+                git url: "${APP_GIT_URL}"
+                // Do a ls -lart to view all the files are cloned. It will be clonned. This is just for you to be sure about it.
+                sh "ls -lart ./*"
+                // List all branches in your repo.
+                }
+            }
+        }
+
+
+        stage('Launch new app in DEV env') {
+            steps {
+                echo '### Running Jkube Plugin ###'
+                sh '''
+                        ./mvnw clean package oc:build oc:resource oc:apply
+                   '''
+            }
+        }
+
+        stage('Wait for deployment in DEV env') {
+            steps {
+                script {
+                    openshift.withCluster() {
+                        openshift.withProject( "${DEV_PROJECT}" ) {
+                            openshift.selector("dc", "${APP_NAME}").related('pods').untilEach(1) {
+                                return (it.object().status.phase == "Running")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+}
