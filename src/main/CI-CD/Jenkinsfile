@@ -32,11 +32,11 @@ pipeline {
                 			configs: [
                 				variablesReplaceItemConfig(
                 					name: 'DB_USER',
-                					value: ${DB_USER}
+                					value: '${DB_USER}'
                 				),
                 				variablesReplaceItemConfig(
                 					name: 'DB_PASSWORD',
-                					value: ${DB_PASSWORD}
+                					value: '${DB_PASSWORD}'
                 				)
                 			],
                 			fileEncoding: 'UTF-8',
