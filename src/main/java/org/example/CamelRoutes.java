@@ -17,14 +17,14 @@ public class CamelRoutes extends RouteBuilder {
         getContext().setStreamCaching(true);
         getContext().setUseMDCLogging(true);
 
-        from("timer:helloDb?period={{example.timer.period}}").routeId("routeHelloWorldDb")
-                .log("Retrieving entries from database each {{example.timer.period}} milliseconds")
-                .to("sql:{{example.sql.query}}?datasource=#db&outputType=StreamList")
-                .split(body()).streaming().parallelProcessing()
-                .bean(transformationComponent, "removeIdKey")
-                .marshal().json(JsonLibrary.Jackson)
-                .log("${body}")
-                .end();
+            rest("/say")
+                .get("/hello").produces("application/json").to("direct:hello")
+                .get("/bye").consumes("application/json").to("direct:bye");
+
+            from("direct:hello")
+                .transform().constant("{\"\"}");
+            from("direct:bye")
+                .transform().constant("Bye World");
 
     }
 }
