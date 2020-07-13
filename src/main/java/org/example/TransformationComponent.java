@@ -1,12 +1,10 @@
 package org.example;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
-
-import javax.enterprise.context.ApplicationScoped;
-
+import org.apache.camel.Body;
 import org.example.domain.Greeting;
 
-import java.util.Map;
+import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 @RegisterForReflection
@@ -23,5 +21,13 @@ public class TransformationComponent {
         greeting.setMessage("Bye !!");
         return greeting;
     }
+
+    public Greeting sayMessage(@Body String bodyMessage){
+        Greeting greeting = new Greeting();
+        greeting.setMessage(bodyMessage);
+        return greeting;
+    }
+
+
 
 }
