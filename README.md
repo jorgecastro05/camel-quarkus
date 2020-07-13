@@ -80,3 +80,13 @@ Start Test producer
 ##### Run native image on openshift
     
     oc new-app --name quarkus-native --docker-image quay.io/jorgecastro05/camel-quarkus
+   
+#### Load Openshift console into eclipse che
+
+Execute the task download and configure oc, then open a new terminal and execute the following command
+
+     export PATH=$PATH:$(pwd)/oc-console
+
+    
+    
+
