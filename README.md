@@ -71,6 +71,20 @@ See the next example if you want to change the base image
 ##### Run native image on openshift
     
     oc new-app --name quarkus-native --docker-image quay.io/jorgecastro05/camel-quarkus
+
+##### Run native image on kubernetes
+
+    kubectl create deployment quarkus-native --image=quay.io/jorgecastro05/camel-quarkus
+
+For expose the application you can create a service with type `NodePort`:
+
+    kubectl expose deployment quarkus-native --type=NodePort --port=8080
+    kubectl get svc
+
+Check the random port and test ex `curl http://localhost:30652/swagger-ui/`
+
+    NAME               TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+    quarkus-native     NodePort   10.43.242.183   <none>        8080:30652/TCP   3s
    
 #### Load Openshift console into eclipse che
 
