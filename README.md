@@ -25,6 +25,8 @@ The application is now runnable using `java -jar target/camel-quarkus-1.0.0-SNAP
 
 ## Creating a native executable
 
+user for install the prerequisites with graal `gu install native-image`
+install compiler libraries for OS ex: `sudo dnf install gcc-c++ zlib-devel`
 You can create a native executable using: `./mvnw package -Pnative`.
 
 Or, if you don't have GraalVM installed, you can run the native executable build in a container using: `./mvnw package -Pnative -Dquarkus.native.container-build=true`.
@@ -75,6 +77,7 @@ See the next example if you want to change the base image
 ##### Run native image on kubernetes
 
     kubectl create deployment quarkus-native --image=quay.io/jorgecastro05/camel-quarkus
+    kubectl set env deployment quarkus-native DISABLE_SIGNAL_HANDLERS="true"
 
 For expose the application you can create a service with type `NodePort`:
 
