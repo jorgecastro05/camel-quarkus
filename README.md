@@ -1,10 +1,6 @@
 # camel-quarkus project
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework and camel Integration framework
-Uses the following technologies.
-- Data source with mariadb
-- MDC Logging
-- Infinispan
 
 If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
 
