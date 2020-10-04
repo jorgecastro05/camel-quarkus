@@ -144,17 +144,6 @@
                             </entries>
                         </configMap>
                     </resources>
-                    <enricher>
-                        <config>
-                            <jkube-openshift-imageChangeTrigger>
-                                <containers>quarkus</containers>
-                            </jkube-openshift-imageChangeTrigger>
-                            <jkube-healthcheck-quarkus>
-                                <livenessInitialDelay>10</livenessInitialDelay>
-                                <readinessIntialDelay>10</readinessIntialDelay>
-                            </jkube-healthcheck-quarkus>
-                        </config>
-                    </enricher>
                 </configuration>
             </plugin>
             <plugin>
