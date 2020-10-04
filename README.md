@@ -1,91 +1,85 @@
-# camel-quarkus project
+# camel-quarkus Base project
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework and camel Integration framework
+This is my personal project, uses Quarkus, the Supersonic Subatomic Java Framework and camel Integration framework
 
 If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
 
 ## Running the application in dev mode
 
-You can run your application in dev mode that enables live coding using:
-```
-./mvnw quarkus:dev
-```
+You can run your application in dev mode that enables live coding using `./mvnw quarkus:dev`
+
 
 ## Packaging and running the application
 
-The application can be packaged using `./mvnw package`.
+The application can be packaged using `./mvnw package`. 
 It produces the `camel-quarkus-1.0.0-SNAPSHOT-runner.jar` file in the `/target` directory.
 Be aware Lang it’s not an _über-jar_ as the dependencies are copied into the `target/lib` directory.
-
 The application is now runnable using `java -jar target/camel-quarkus-1.0.0-SNAPSHOT-runner.jar`.
 
 ## Creating a native executable
 
-user for install the prerequisites with graal `gu install native-image`
-install compiler libraries for OS ex: `sudo dnf install gcc-c++ zlib-devel`
-You can create a native executable using: `./mvnw package -Pnative`.
+1. Install GraalVM, you can install easily with SDKMAN - https://sdkman.io/
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: `./mvnw package -Pnative -Dquarkus.native.container-build=true`.
+2. Install the prerequisites with graal `gu install native-image`, 
+then install the compiler libraries for especific operating system, for example in fedora 
+`sudo dnf install gcc-c++ zlib-devel` 
 
-You can then execute your native executable with: `./target/camel-quarkus-1.0.0-SNAPSHOT-runner`
+3. create a native executable using: `./mvnw package -Pnative`.
 
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/building-native-image.
+4. You can then execute your native executable with: `./target/camel-quarkus-1.0.0-SNAPSHOT-runner`
 
+*Or, if you don't have GraalVM installed, you can run the native executable build in a container using: `./mvnw package -Pnative -Dquarkus.native.container-build=true`. 
+**Note** (this require a docker daemon running in the host machine).*
 
-## Deploy directly into Openshift
+## Deploy to Openshift with JVM docker Image
 
-Use this command to deploy on Openshift (must be logged first)
+1. Set the property `<jkube.generator.quarkus.nativeImage>true</jkube.generator.quarkus.nativeImage>` 
+to false in the pom.xml file
 
- mvn clean package oc:build oc:resource oc:apply
- 
-See the next example if you want to change the base image
-
-            <plugin>
-                <groupId>org.eclipse.jkube</groupId>
-                <artifactId>openshift-maven-plugin</artifactId>
-                <version>1.0.0-alpha-3</version>
-                <configuration>
-                    <buildStrategy>docker</buildStrategy>
-                    <generator>
-                        <includes>
-                            <include>quarkus</include>
-                        </includes>
-                        <config>
-                            <quarkus>
-                                <from>registry.access.redhat.com/openjdk/openjdk-11-rhel7</from>
-                            </quarkus>
-                        </config>
-                    </generator>
-                </configuration>
-            </plugin>
-
-
-##### Create image native and push into quay.io
+2. use this command to deploy on Openshift `mvn clean package oc:build oc:resource oc:apply` 
+or this command `mvn clean install`
     
+## Deploy openshift with Native docker image
+
+This project creates native images by default, use this goal to deploy the application 
+all in one, (with the prerequisites to build native executable already).
+
+    mvn clean package oc:build oc:resource oc:apply -Pnative
+
+
+## Useful commands for deploying quarkus applications 
+
+- Creating image natives and pushing into quay.io
+
+    ~~~
     podman build -f src/main/docker/Dockerfile.native -t camel-quarkus .
     podman login quay.io
-    podman push camel-quarkus docker://quay.io/jorgecastro05/camel-quarkus
+    podman push camel-quarkus docker://quay.io/{userquay}/camel-quarkus
+    ~~~
     
-##### Run native image on openshift
+- Creating the deployment config from the uploaded native image
     
-    oc new-app --name quarkus-native --docker-image quay.io/jorgecastro05/camel-quarkus
+  `oc new-app --name quarkus-native --docker-image quay.io/jorgecastro05/camel-quarkus`
 
-##### Run native image on kubernetes
-
+- Creating kubernetes deployments from the upload native image
+    
+    ~~~
     kubectl create deployment quarkus-native --image=quay.io/jorgecastro05/camel-quarkus
     kubectl set env deployment quarkus-native DISABLE_SIGNAL_HANDLERS="true"
+    ~~~
 
-For expose the application you can create a service with type `NodePort`:
-
+- Exposing kubenetes applications
+    ~~~
     kubectl expose deployment quarkus-native --type=NodePort --port=8080
     kubectl get svc
+    ~~~
 
-Check the random port and test ex `curl http://localhost:30652/swagger-ui/`
+- Check the random port generated by kubernetes and test ex `curl http://localhost:30652/swagger-ui/`
 
     NAME               TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
     quarkus-native     NodePort   10.43.242.183   <none>        8080:30652/TCP   3s
    
-#### Load Openshift console into eclipse che
+## Load Openshift console into eclipse che
 
 Execute the task download and configure oc, then open a new terminal and execute the following command
 

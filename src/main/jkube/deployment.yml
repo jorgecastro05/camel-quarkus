@@ -1,6 +1,3 @@
-metadata:
-  annotations:
-    reloader.stakater.com/auto: "true"
 spec:
   replicas: 1
   template:
@@ -15,10 +12,10 @@ spec:
       containers:
         - volumeMounts:
             - name: config
-              mountPath: /opt/config
+              mountPath: /home/quarkus/config
           resources:
             limits:
-              memory: 256Mi
+              memory: 64Mi
               cpu: 500m
           envFrom:
             - secretRef:

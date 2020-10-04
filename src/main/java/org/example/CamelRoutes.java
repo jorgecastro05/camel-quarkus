@@ -38,21 +38,25 @@ public class CamelRoutes extends RouteBuilder {
                 .to("direct:secret");
 
         from("direct:say").routeId("routeSayMessage")
+                .log("Say Message")
                 .bean(transformationComponent, "sayMessage")
                 .marshal().json(JsonLibrary.Jackson)
                 .end();
 
         from("direct:hello").routeId("routeSayHello")
+                .log("Say hello")
                 .bean(transformationComponent, "sayHello")
                 .marshal().json(JsonLibrary.Jackson)
                 .end();
 
         from("direct:bye").routeId("routeSayBye")
+                .log("Say bye")
                 .bean(transformationComponent, "sayBye")
                 .marshal().json(JsonLibrary.Jackson)
                 .end();
 
         from("direct:secret").routeId("routeSaySecret")
+                .log("Say secret")
                 .transform().simple("{{example.secret.message}}")
                 .end();
 
