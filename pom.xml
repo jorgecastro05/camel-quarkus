@@ -50,6 +50,11 @@
             <artifactId>rest-assured</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.camel.quarkus</groupId>
+            <artifactId>camel-quarkus-mock</artifactId>
+            <scope>test</scope>
+        </dependency>
 
         <!-- core dependencies -->
         <dependency>
@@ -106,9 +111,6 @@
             <groupId>org.apache.camel.quarkus</groupId>
             <artifactId>camel-quarkus-timer</artifactId>
         </dependency>
-
-
-
 
     </dependencies>
     <build>
